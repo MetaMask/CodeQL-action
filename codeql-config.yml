@@ -1,0 +1,15 @@
+# codeql-template.yml
+name: "MetaMask CodeQL Config"
+
+paths-ignore:
+  - test
+
+queries:
+  - name: Security-extended queries for JavaScript
+    uses: ./CodeQL-action/query-suites/base.qls
+
+query-filters:
+- exclude:
+    id: js/foo
+    id: js/security
+  

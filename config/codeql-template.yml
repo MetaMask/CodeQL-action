@@ -1,0 +1,21 @@
+# codeql-template.yml
+name: "MetaMask CodeQL Config"
+
+paths-ignore:
+<% pathsIgnored.forEach(function(path) { -%>
+  - <%= path %>
+<% }); -%>
+
+queries:
+<% queries.forEach(function(query) { -%>
+  - name: <%= query.name %>
+    uses: <%= query.uses %>
+<% }); -%>
+
+<% if (rulesExcluded?.length > 0) { -%>
+query-filters:
+- exclude:
+  <% rulesExcluded.forEach(function(rule) { -%>
+  id: <%= rule %>
+  <% }); -%>
+<% } %>
