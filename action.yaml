@@ -1,0 +1,60 @@
+# action.yml
+# witmicko/Appsec-CodeQL@main
+name: 'witmicko AppSec CodeQL'
+description: 'Run witmicko custom CodeQL analysis'
+inputs:
+  repo:
+    description: 'Repository that requested the scan' 
+    required: true
+  repo-owner: 
+    required: false
+    default: witmicko
+  repo-name: 
+    required: false
+    default: appsec-codeql
+
+
+runs:
+  using: 'composite'
+ 
+  steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.repo-owner }}/${{ inputs.repo-name }}
+        path: ${{ inputs.repo-name }}
+
+    - name: Generate Config
+      id: generate-config
+      run: |
+        cd $GITHUB_WORKSPACE/appsec-codeql
+        npm i --silent
+        node scripts/generate-config.js
+      shell: bash 
+      env:
+        REPO: ${{inputs.repo}}
+
+    - name: Print CodeQL Config
+      run: cat ${{ github.workspace }}/appsec-codeql/codeql-config.yml
+      shell: bash
+
+    - name: Initialize CodeQL  
+      uses: github/codeql-action/init@v2
+      with:
+        config-file: ${{ github.workspace }}/appsec-codeql/codeql-config.yml
+        languages: ${{ steps.generate-config.outputs.languages }}
+        source-root: ${{ inputs.repo }}
+
+    - name: Run CodeQL Analysis
+      id: codeql-analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        upload: false
+        checkout-path: ${{ github.workspace }}/${{ inputs.repo }}
+
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: ${{ steps.codeql-analysis.outputs.sarif-output }}
+        category: my-analysis-tool
