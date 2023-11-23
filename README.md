@@ -34,7 +34,7 @@ To integrate this action into your workflow, create a `.yml` file in the `.githu
            repository: ${{ github.repository }}
 
        - name: Run AppSec CodeQL Analysis
-         uses: <username>/qodeql-action@v1.0.0
+         uses: <username>/codeql-action@v1.0.0
          with:
            repo: ${{ github.repository }}
            paths_ignored: test,data,docs
