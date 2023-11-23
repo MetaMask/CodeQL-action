@@ -21,9 +21,10 @@ runs:
     - name: Debug paths
       shell: bash
       run: |
-        echo 1 "${{ github.action_path }}"
+        echo 1 "${{ github.action }}"
         echo 2 ${{ github.action_path }}
-        echo 3 ${{ github.action_repository }}
+        echo 2 ${{ github.action_ref }}
+        
         cat $GITHUB_WORKSPACE/$REPO_NAME/codeql-config.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
