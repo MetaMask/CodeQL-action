@@ -53,7 +53,7 @@ runs:
       id: debug-paths
       run: |
         echo github.workspace
-        cat /home/runner/work/juice-shop/juice-shop/CodeQL-action/codeql-config.yml
+        cat $GITHUB_WORKSPACE/$REPO_NAME/codeql-config.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
         
