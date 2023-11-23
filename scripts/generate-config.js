@@ -18,12 +18,12 @@ console.log(JSON.stringify(inputs, null, 2));
 const loadConfig = (repo) => {
   console.log(`>>>>>repo ${repo}`);
   const repoName = repo.split('/')[1];
-
-  if (!fs.existsSync('../repo-configs/' + repoName + '.js')) {
+  const repoConfigPath = path.join('./repo-configs/' + repoName + '.js');
+  if (!fs.existsSync(repoConfigPath)) {
     console.warn(`No config found for "${repo}", using default config`);
     return require('../repo-configs/default');
   }
-  const config = require('../repo-configs/' + repoName);
+  const config = require(path.join('..', repoConfigPath));
   return config;
 };
 
