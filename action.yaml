@@ -10,9 +10,6 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
-  this-repo: 
-    required: false
-    default: witmicko/CodeQL-action
 
 runs:
   using: 'composite' 
