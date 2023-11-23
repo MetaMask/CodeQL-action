@@ -42,7 +42,6 @@ To integrate this action into your workflow, create a `.yml` file in the `.githu
    ```
 
 
-
 2. **Configurations**:
    Place your custom configurations for repositories in the `repo-configs` directory and your CodeQL query suites in the `query-suites` directory. These will be utilized by the action to tailor the scan according to your specific requirements.
 

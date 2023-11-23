@@ -1,5 +1,3 @@
-# action.yml
-# witmicko/CodeQL-action@main
 name: 'witmicko AppSec CodeQL'
 description: 'Run witmicko custom CodeQL analysis'
 inputs:
@@ -16,11 +14,8 @@ inputs:
     required: false
     default: witmicko/CodeQL-action
 
-
 runs:
-  using: 'composite'
-
- 
+  using: 'composite' 
   steps:
     - name: Extract repository owner and name
       id: extract-repo-info
@@ -35,6 +30,7 @@ runs:
         repository: ${{ inputs.this-repo }}
         ref: pre-copy
         path: ${{ env.REPO_NAME }}
+
 
     - name: Generate Config
       id: generate-config
@@ -74,7 +70,6 @@ runs:
       with:
         upload: false
         checkout_path: ${{ github.workspace }}/${{ inputs.repo }}
-
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
