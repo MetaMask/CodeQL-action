@@ -10,31 +10,17 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
-  this-repo: 
-    required: false
-    default: witmicko/CodeQL-action
 
 runs:
   using: 'composite' 
   steps:
-  
-    - name: Debug paths
-      shell: bash
-      run: |
-        echo 1 "${{ github.action }}"
-        echo 2 ${{ github.action_path }}
-        echo 2 ${{ github.action_ref }}
-        
-        cat $GITHUB_WORKSPACE/$REPO_NAME/codeql-config.yml
-        echo "echo languages"
-        echo ${{ steps.generate-config.outputs.languages }}
-
     - name: Extract repository owner and name
       id: extract-repo-info
       run: |
-        IFS='/' read -r OWNER REPO_NAME <<< "${{ inputs.this-repo }}"
+        IFS='/' read -r _ _ _ _ _ OWNER REPO_NAME REPO_REF <<< "${{ inputs.this-repo }}"
         echo "OWNER=$OWNER" >> $GITHUB_ENV
         echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+        echo "REPO_REF=$REPO_REF" >> $GITHUB_ENV
       shell: bash
     - name: Check out Git repository
       uses: actions/checkout@v4
