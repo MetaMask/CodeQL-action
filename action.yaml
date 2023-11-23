@@ -10,6 +10,9 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
+  this-repo: 
+    required: false
+    default: witmicko/CodeQL-action
 
 runs:
   using: 'composite' 
@@ -17,7 +20,8 @@ runs:
     - name: Extract repository owner and name
       id: extract-repo-info
       run: |
-        IFS='/' read -r _ _ _ _ _ OWNER REPO_NAME REPO_REF <<< "${{ inputs.this-repo }}"
+        echo ${{ github.action_path }}
+        IFS='/' read -r _ _ _ _ _ OWNER REPO_NAME REPO_REF <<< "${{ github.action_path }}"
         echo "OWNER=$OWNER" >> $GITHUB_ENV
         echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
         echo "REPO_REF=$REPO_REF" >> $GITHUB_ENV
