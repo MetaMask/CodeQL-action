@@ -18,23 +18,22 @@ runs:
       id: extract-repo-info
       run: |
         echo ${{ github.action_path }}
-        IFS='/' read -r _ _ _ _ _ OWNER REPO_NAME REPO_REF <<< "${{ github.action_path }}"
-        echo "OWNER=$OWNER" >> $GITHUB_ENV
-        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-        echo "REPO_REF=$REPO_REF" >> $GITHUB_ENV
+        IFS='/' read -r _ _ _ _ _ ACTION_REPO_OWNER ACTION_REPO_NAME _ <<< "${{ github.action_path }}"
+        echo "ACTION_REPO_OWNER=$ACTION_REPO_OWNER" >> $GITHUB_ENV
+        echo "ACTION_REPO_NAME=$ACTION_REPO_NAME" >> $GITHUB_ENV
       shell: bash
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.this-repo }}
         ref: pre-copy
-        path: ${{ env.REPO_NAME }}
+        path: ${{ env.ACTION_REPO_NAME }}
 
 
     - name: Generate Config
       id: generate-config
       run: |
-        cd $GITHUB_WORKSPACE/$REPO_NAME
+        cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         npm i --silent
         node scripts/generate-config.js
       shell: bash 
@@ -48,14 +47,14 @@ runs:
       id: debug-paths
       run: |
         echo github.workspace
-        cat $GITHUB_WORKSPACE/$REPO_NAME/codeql-config.yml
+        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
         
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v2
       with:
-        config-file: ${{ github.workspace }}/${{ env.REPO_NAME }}/codeql-config.yml
+        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
         languages: ${{ steps.generate-config.outputs.languages }}
         source-root: ${{ inputs.repo }}
 
