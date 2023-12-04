@@ -1,47 +1,60 @@
-# action.yml
-# witmicko/Appsec-CodeQL@main
 name: 'witmicko AppSec CodeQL'
 description: 'Run witmicko custom CodeQL analysis'
 inputs:
   repo:
     description: 'Repository that requested the scan' 
     required: true
-  repo-owner: 
+  paths_ignored:
+    description: 'Comma delimited paths to ignore during scan' 
     required: false
-    default: witmicko
-  repo-name: 
+  rules_excluded:
+    description: 'Comma delimited IDs of rules to exclude' 
     required: false
-    default: appsec-codeql
-
 
 runs:
-  using: 'composite'
- 
+  using: 'composite' 
   steps:
+    - name: Extract repository owner and name
+      id: extract-repo-info
+      run: |
+        echo ${{ github.action_path }}
+        IFS='/' read -r _ _ _ _ _ ACTION_REPO_OWNER ACTION_REPO_NAME _ <<< "${{ github.action_path }}"
+        echo "ACTION_REPO_OWNER=$ACTION_REPO_OWNER" >> $GITHUB_ENV
+        echo "ACTION_REPO_NAME=$ACTION_REPO_NAME" >> $GITHUB_ENV
+      shell: bash
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
-        repository: ${{ inputs.repo-owner }}/${{ inputs.repo-name }}
-        path: ${{ inputs.repo-name }}
+        repository: ${{ inputs.this-repo }}
+        ref: pre-copy
+        path: ${{ env.ACTION_REPO_NAME }}
+
 
     - name: Generate Config
       id: generate-config
       run: |
-        cd $GITHUB_WORKSPACE/appsec-codeql
+        cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         npm i --silent
         node scripts/generate-config.js
       shell: bash 
       env:
         REPO: ${{inputs.repo}}
+        PATHS_IGNORED: ${{ inputs.paths_ignored}}
+        RULES_EXCLUDED: ${{ inputs.rules_excluded}}
 
-    - name: Print CodeQL Config
-      run: cat ${{ github.workspace }}/appsec-codeql/codeql-config.yml
+    - name: Debug paths
       shell: bash
-
+      id: debug-paths
+      run: |
+        echo github.workspace
+        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config.yml
+        echo "echo languages"
+        echo ${{ steps.generate-config.outputs.languages }}
+        
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v2
       with:
-        config-file: ${{ github.workspace }}/appsec-codeql/codeql-config.yml
+        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
         languages: ${{ steps.generate-config.outputs.languages }}
         source-root: ${{ inputs.repo }}
 
@@ -50,8 +63,7 @@ runs:
       uses: github/codeql-action/analyze@v2
       with:
         upload: false
-        checkout-path: ${{ github.workspace }}/${{ inputs.repo }}
-
+        checkout_path: ${{ github.workspace }}/${{ inputs.repo }}
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2

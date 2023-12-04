@@ -5,8 +5,8 @@ The AppSec CodeQL GitHub Action is tailored for performing CodeQL scans on repos
 
 ## Inputs
 - **`repo`**: (Required) The full name of the repository to be scanned.
-- **`repo-owner`**: The owner of the repository. If not specified, it defaults to the user or organization running the action.
-- **`repo-name`**: The name of the repository. Defaults to the repository name where the action is being run.
+- **`paths_ignored`**: Comma delimited paths to be ignored by the scan.
+- **`rules_excluded`**: Comma delimited CodeQl rule ids to be excluded.
 
 ## Usage
 To integrate this action into your workflow, create a `.yml` file in the `.github/workflows` directory of your repository and follow the steps below:
@@ -34,14 +34,13 @@ To integrate this action into your workflow, create a `.yml` file in the `.githu
            repository: ${{ github.repository }}
 
        - name: Run AppSec CodeQL Analysis
-         uses: <username>/Appsec-CodeQL@main
+         uses: <username>/codeql-action@v1.0.0
          with:
            repo: ${{ github.repository }}
-           repo-owner: <optional-repo-owner>
-           repo-name: <optional-repo-name>
+           paths_ignored: test,data,docs
+           rules_excluded: js/foo,js/bar
    ```
 
-   Replace `<username>` with the username or organization name hosting the action. Adjust `<optional-repo-owner>` and `<optional-repo-name>` as needed.
 
 2. **Configurations**:
    Place your custom configurations for repositories in the `repo-configs` directory and your CodeQL query suites in the `query-suites` directory. These will be utilized by the action to tailor the scan according to your specific requirements.
