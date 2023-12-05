@@ -1,5 +1,5 @@
-name: 'witmicko AppSec CodeQL'
-description: 'Run witmicko custom CodeQL analysis'
+name: 'MetaMask AppSec CodeQL'
+description: 'Run MetaMask custom CodeQL analysis'
 inputs:
   repo:
     description: 'Repository that requested the scan' 
