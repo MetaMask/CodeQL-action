@@ -51,7 +51,7 @@ runs:
         echo ${{ steps.generate-config.outputs.languages }}
         
     - name: Initialize CodeQL  
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
         languages: ${{ steps.generate-config.outputs.languages }}
@@ -59,13 +59,13 @@ runs:
 
     - name: Run CodeQL Analysis
       id: codeql-analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         upload: false
         checkout_path: ${{ github.workspace }}/${{ inputs.repo }}
 
     - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: ${{ steps.codeql-analysis.outputs.sarif-output }}
         category: my-analysis-tool
