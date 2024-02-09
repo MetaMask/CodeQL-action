@@ -1,0 +1,2 @@
+- import: codeql-suites/java-security-extended.qls
+  from: codeql/java-queries

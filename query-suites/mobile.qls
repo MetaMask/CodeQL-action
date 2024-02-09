@@ -1,6 +1,0 @@
-- queries: '.'
-  from: codeql/javascript-queries
-- include:
-    kind: problem
-
-- qlpack: appsec-queries/all
