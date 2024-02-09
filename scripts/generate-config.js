@@ -19,6 +19,7 @@ const loadConfig = (repo) => {
   console.log(`>>>>>repo ${repo}`)
   const repoName = repo.split("/")[1]
   const repoConfigPath = path.join("./repo-configs/" + repoName + ".js")
+  console.log(`Checking if config exists for ${repoConfigPath}`)
   if (!fs.existsSync(repoConfigPath)) {
     console.warn(`No config found for "${repo}" in ${repoConfigPath} path, using default config`)
     return require("../repo-configs/default")
