@@ -1,19 +1,22 @@
-name: 'MetaMask AppSec CodeQL'
-description: 'Run MetaMask custom CodeQL analysis'
+name: "MetaMask AppSec CodeQL"
+description: "Run MetaMask custom CodeQL analysis"
 inputs:
   repo:
-    description: 'Repository that requested the scan' 
+    description: "Repository that requested the scan"
     required: true
   paths_ignored:
-    description: 'Comma delimited paths to ignore during scan' 
+    description: "Comma delimited paths to ignore during scan"
     required: false
   rules_excluded:
-    description: 'Comma delimited IDs of rules to exclude' 
+    description: "Comma delimited IDs of rules to exclude"
     required: false
 
 runs:
-  using: 'composite' 
+  using: "composite"
   steps:
+    - name: fail it
+      run: exit 1
+      shell: bash
     - name: Extract repository owner and name
       id: extract-repo-info
       run: |
@@ -28,14 +31,13 @@ runs:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
 
-
     - name: Generate Config
       id: generate-config
       run: |
         cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         npm i --silent
         node scripts/generate-config.js
-      shell: bash 
+      shell: bash
       env:
         REPO: ${{inputs.repo}}
         PATHS_IGNORED: ${{ inputs.paths_ignored}}
@@ -49,8 +51,8 @@ runs:
         cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
-        
-    - name: Initialize CodeQL  
+
+    - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
