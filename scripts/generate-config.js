@@ -9,8 +9,8 @@ const template = fs.readFileSync("config/codeql-template.yml", "utf8")
 const { REPO, PATHS_IGNORED, RULES_EXCLUDED } = process.env
 const inputs = {
   repo: REPO,
-  pathsIgnored: PATHS_IGNORED ? PATHS_IGNORED.split("\n") : [],
-  rulesExcluded: RULES_EXCLUDED ? RULES_EXCLUDED.split("\n") : [],
+  pathsIgnored: PATHS_IGNORED ? PATHS_IGNORED.split("\n").filter((line) => line.trim() !== "") : [],
+  rulesExcluded: RULES_EXCLUDED ? RULES_EXCLUDED.split("\n").filter((line) => line.trim() !== "") : [],
 }
 console.log(`>>>>>inputs: `)
 console.log(JSON.stringify(inputs, null, 2))
