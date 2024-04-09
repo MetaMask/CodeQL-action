@@ -22,11 +22,21 @@ runs:
         echo "ACTION_REPO_OWNER=$ACTION_REPO_OWNER" >> $GITHUB_ENV
         echo "ACTION_REPO_NAME=$ACTION_REPO_NAME" >> $GITHUB_ENV
       shell: bash
+    
+    - name: Debug paths
+      shell: bash
+      id: debug-paths
+      run: |
+        echo $ACTION_REPO_OWNER
+        echo $ACTION_REPO_NAME
+    
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
+        # TODO remove this
+        ref: dev-custom-ignore-rules
 
 
     - name: Generate Config
@@ -34,9 +44,7 @@ runs:
       run: |
         cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         npm i --silent
-        cat scripts/generate-config.js
         node scripts/generate-config.js
-        ls
       shell: bash 
       env:
         REPO: ${{inputs.repo}}
