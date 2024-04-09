@@ -6,3 +6,4 @@ package-lock.json
 .DS_Store
 codeql-config-generated
 github_output
+.env.test
