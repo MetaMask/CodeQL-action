@@ -28,7 +28,7 @@ runs:
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
-        # TODO remove this
+        # TODO add ref here for development, otherwise it will always use the default branch
         ref: dev-custom-ignore-rules
 
     - name: Generate Config
