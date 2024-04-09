@@ -2,8 +2,8 @@
 
 
 ## development setup
-add `ref:` to `checkout-codeql-action` step, this ensures that your selected branch will run on the code scanner
-it should look like this:
+add `ref:` to `checkout-codeql-action` step,
+this ensures that in your test PR you development branch od CodeQl-action will run.
 
 ```yaml
     - name: Check out Codeql-action Git repository
