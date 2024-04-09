@@ -34,7 +34,9 @@ runs:
       run: |
         cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         npm i --silent
+        cat scripts/generate-config.js
         node scripts/generate-config.js
+        ls
       shell: bash 
       env:
         REPO: ${{inputs.repo}}
