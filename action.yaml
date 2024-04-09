@@ -46,14 +46,14 @@ runs:
       id: debug-paths
       run: |
         echo github.workspace
-        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config.yml
+        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config-generated.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
         
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v3
       with:
-        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
+        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config-generated.yml
         languages: ${{ steps.generate-config.outputs.languages }}
         source-root: ${{ inputs.repo }}
 
