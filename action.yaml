@@ -22,12 +22,13 @@ runs:
         echo "ACTION_REPO_OWNER=$ACTION_REPO_OWNER" >> $GITHUB_ENV
         echo "ACTION_REPO_NAME=$ACTION_REPO_NAME" >> $GITHUB_ENV
       shell: bash
-    - name: Check out Git repository
+    
+    - name: Check out Codeql-action Git repository
+      id: checkout-codeql-action
       uses: actions/checkout@v4
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
-
 
     - name: Generate Config
       id: generate-config
@@ -40,20 +41,11 @@ runs:
         REPO: ${{inputs.repo}}
         PATHS_IGNORED: ${{ inputs.paths_ignored}}
         RULES_EXCLUDED: ${{ inputs.rules_excluded}}
-
-    - name: Debug paths
-      shell: bash
-      id: debug-paths
-      run: |
-        echo github.workspace
-        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config.yml
-        echo "echo languages"
-        echo ${{ steps.generate-config.outputs.languages }}
         
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v3
       with:
-        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config.yml
+        config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config-generated.yml
         languages: ${{ steps.generate-config.outputs.languages }}
         source-root: ${{ inputs.repo }}
 
