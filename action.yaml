@@ -46,6 +46,8 @@ runs:
       id: debug-paths
       run: |
         echo github.workspace
+        ls $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/$ACTION_REPO_NAME
         cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config-generated.yml
         echo "echo languages"
         echo ${{ steps.generate-config.outputs.languages }}
