@@ -23,13 +23,12 @@ runs:
         echo "ACTION_REPO_NAME=$ACTION_REPO_NAME" >> $GITHUB_ENV
       shell: bash
     
-    - name: Check out Git repository
+    - name: Check out Codeql-action Git repository
+      id: checkout-codeql-action
       uses: actions/checkout@v4
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
-        # add ref here for development, otherwise it will always use the default branch
-        # ref: dev-branch
 
     - name: Generate Config
       id: generate-config
