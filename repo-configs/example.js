@@ -5,13 +5,15 @@ const config = {
     
   ],
   pathsIgnored: [
-    "test"
+    "data",
+    "test",
+    "frontend/src/assets"
 
   ],
   "queries": [
     { 
       name: "Security-extended queries for JavaScript", 
-      uses: "./CodeQL-action/query-suites/base.qls"
+      uses: "./appsec-codeql/query-suites/base.qls"
     }
   ]
 };
