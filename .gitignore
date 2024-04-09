@@ -1,9 +1,6 @@
 node_modules/
 package-lock.json
 .env
+.vscode/
 pnpm-lock.yaml
 package-lock.json
-.DS_Store
-codeql-config-generated
-github_output
-.env.test

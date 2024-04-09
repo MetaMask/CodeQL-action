@@ -29,7 +29,22 @@ const loadConfig = (repo) => {
 
 const debugConfig = (config) => {
   console.log(">>>>> config <<<<<")
-  console.log(JSON.stringify(config, null, 2))
+  config.queries.forEach((q) => {
+    console.log(q.name)
+    console.log(q.uses)
+    if (q.uses.includes(".qls")) {
+      try {
+        const qls = fs.readFileSync(q.uses.replace("CodeQL-action/", ""), "utf8")
+        console.log(`  >>>>>\n`)
+        console.log(qls)
+        console.log(`  <<<<<`)
+      } catch (err) {
+        console.log("  >>>>> error <<<<<")
+        console.log(`  Couldn't reach: ${q.uses}`)
+      }
+    }
+  })
+  console.log(">>>>> config end <<<<<")
 }
 
 const config = loadConfig(inputs.repo)
@@ -40,8 +55,8 @@ fs.appendFileSync(outputFile, `languages=${config.languages}\n`)
 
 const output = ejs.render(template, {
   pathsIgnored: [...config.pathsIgnored, ...inputs.pathsIgnored],
-  rulesExcluded: [...config.rulesExcluded, ...inputs.rulesExcluded],
+  rulesExcluded: inputs.rulesExcluded,
   queries: config.queries,
 })
 console.log(output)
-fs.writeFileSync("codeql-config-generated.yml", output)
+fs.writeFileSync("codeql-config.yml", output)

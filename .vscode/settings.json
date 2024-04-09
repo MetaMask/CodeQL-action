@@ -1,6 +1,5 @@
 {
   "cSpell.enableFiletypes": [
     "!yaml"
-  ],
-  "codeQL.githubDatabase.download": "never"
+  ]
 }
