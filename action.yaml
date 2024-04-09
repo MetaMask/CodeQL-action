@@ -25,7 +25,7 @@ runs:
     
     - name: Debug paths
       shell: bash
-      id: debug-paths
+      id: debug-paths1
       run: |
         echo $ACTION_REPO_OWNER
         echo $ACTION_REPO_NAME
