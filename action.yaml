@@ -41,14 +41,14 @@ runs:
         PATHS_IGNORED: ${{ inputs.paths_ignored}}
         RULES_EXCLUDED: ${{ inputs.rules_excluded}}
 
-    # - name: Debug paths
-    #   shell: bash
-    #   id: debug-paths
-    #   run: |
-    #     echo github.workspace
-    #     cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config-generated.yml
-    #     echo "echo languages"
-    #     echo ${{ steps.generate-config.outputs.languages }}
+    - name: Debug paths
+      shell: bash
+      id: debug-paths
+      run: |
+        echo github.workspace
+        cat $GITHUB_WORKSPACE/$ACTION_REPO_NAME/codeql-config-generated.yml
+        echo "echo languages"
+        echo ${{ steps.generate-config.outputs.languages }}
         
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v3
