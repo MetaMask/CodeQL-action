@@ -10,6 +10,9 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
+  custom_queries_pat:
+    description: 'PAT for custom queries repository' 
+    required: true
 
 runs:
   using: 'composite' 
@@ -37,6 +40,7 @@ runs:
         repository: MetaMask/CodeQL-Queries
         ref: main
         path: ${{ github.workspace }}/custom-queries
+        token: ${{ inputs.custom_queries_pat }}
 
     - name: Generate Config
       id: generate-config
