@@ -9,7 +9,7 @@ const config = {
     },
     {
       name: "MetaMask Application Security Custom Queries",
-      uses: "./CodeQL-action/custom-queries/query-suites/custom-queries.qls",
+      uses: "./custom-queries/query-suites/custom-queries.qls",
     },
   ],
 }
