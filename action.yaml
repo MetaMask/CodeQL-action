@@ -29,6 +29,13 @@ runs:
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
+    
+    - name: Checkout Custom Query Repository
+      id: checkout-custom-query
+      uses: actions/checkout@v4
+      with:
+        repository: MetaMask/CodeQL-Queries
+        path: ${{ env.ACTION_REPO_NAME }}/custom-queries
 
     - name: Generate Config
       id: generate-config
