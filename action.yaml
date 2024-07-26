@@ -36,7 +36,7 @@ runs:
       with:
         repository: MetaMask/CodeQL-Queries
         ref: main
-        path: ${{ env.ACTION_REPO_NAME }}/custom-queries
+        path: /custom-queries
 
     - name: Generate Config
       id: generate-config
