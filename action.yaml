@@ -29,7 +29,6 @@ runs:
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
         path: ${{ env.ACTION_REPO_NAME }}
-        ref: dev-custom-queries
     
     - name: Checkout Custom Query Repository
       id: checkout-custom-query
