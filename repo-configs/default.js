@@ -7,6 +7,10 @@ const config = {
       name: "Security-extended queries for JavaScript",
       uses: "./CodeQL-action/query-suites/base.qls",
     },
+    {
+      name: "MetaMask Application Security Custom Queries",
+      uses: "./custom-queries/query-suites/custom-queries.qls",
+    },
   ],
 }
 module.exports = config;
