@@ -5,7 +5,7 @@ const config = {
   queries: [
     {
       name: "queries for linea",
-      uses: "./CodeQL-action/query-suites/linea.qls",
+      uses: "./CodeQL-action/query-suites/linea-monorepo.qls",
     },
     {
       name: "MetaMask Application Security Custom Queries",
