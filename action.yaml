@@ -10,6 +10,9 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
+  languages:
+    description: 'Comma delimited list of languages detected in the repository'
+    required: false
 
 runs:
   using: 'composite' 
@@ -49,6 +52,7 @@ runs:
         REPO: ${{inputs.repo}}
         PATHS_IGNORED: ${{ inputs.paths_ignored}}
         RULES_EXCLUDED: ${{ inputs.rules_excluded}}
+        LANGUAGES: ${{ inputs.languages }}
         
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v3
