@@ -43,15 +43,8 @@ const mapLanguagesToCodeQL = (githubLanguages) => {
 const generateQueriesForLanguages = (codeqlLanguages) => {
   const queries = []
   
-  // Add security queries for each detected language
-  codeqlLanguages.forEach(lang => {
-    queries.push({
-      name: `Security queries for ${lang}`,
-      uses: `codeql-suites/${lang}-security-extended.qls`
-    })
-  })
-  
-  // Always add custom MetaMask queries
+  // Only add custom MetaMask queries
+  // CodeQL will use default queries for each language automatically
   queries.push({
     name: "MetaMask Application Security Custom Queries",
     uses: "./custom-queries/query-suites/custom-queries.qls"
