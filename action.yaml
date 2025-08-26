@@ -42,7 +42,7 @@ runs:
       id: generate-config
       run: |
         cd $GITHUB_WORKSPACE/$ACTION_REPO_NAME
-        npm i --silent
+        yarn --immutable
         node scripts/generate-config.js
       shell: bash 
       env:
