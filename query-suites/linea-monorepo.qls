@@ -1,19 +1,19 @@
-- queries: '.'
+- queries: 'security-extended'
   from: codeql/javascript-queries
   include:
     kind: problem
 
-- queries: '.'
+- queries: 'security-extended'
   from: codeql/go-queries
   include:
     kind: problem
 
-- queries: '.'
+- queries: 'security-extended'
   from: codeql/java-queries
   include:
     kind: problem
 
-- queries: '.'
+- queries: 'security-extended'
   from: codeql/actions-queries
   include:
     kind: problem
