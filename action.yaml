@@ -10,6 +10,18 @@ inputs:
   rules_excluded:
     description: 'Comma delimited IDs of rules to exclude' 
     required: false
+  language:
+    description: 'Language to scan'
+    required: false
+    
+  build_mode:
+    description: 'Build mode for the language'
+    required: false
+    
+  build_command:
+    description: 'Build command for the language'
+    required: false
+    default: null
 
 runs:
   using: 'composite' 
@@ -28,6 +40,7 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{env.ACTION_REPO_OWNER}}/${{ env.ACTION_REPO_NAME }}
+        ref: mo-multilang-support 
         path: ${{ env.ACTION_REPO_NAME }}
     
     - name: Checkout Custom Query Repository
@@ -49,17 +62,42 @@ runs:
         REPO: ${{inputs.repo}}
         PATHS_IGNORED: ${{ inputs.paths_ignored}}
         RULES_EXCLUDED: ${{ inputs.rules_excluded}}
-        
+    
+
+    - name: Set up JDK 21 for Java/Kotlin
+      if: ${{ inputs.language == 'java-kotlin' }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Log languages
+      run: |
+        echo "languages: ${{ inputs.language || steps.generate-config.outputs.languages }}"
+        echo "build_mode: ${{ inputs.build_mode }}"
+        echo "build_command: ${{ inputs.build_command }}"
+        echo "language.inputs: ${{ inputs.language }}"
+        echo "language.generate-config: ${{ steps.generate-config.outputs.languages }}"
+      shell: bash
+
     - name: Initialize CodeQL  
       uses: github/codeql-action/init@v3
       with:
         config-file: ${{ github.workspace }}/${{ env.ACTION_REPO_NAME }}/codeql-config-generated.yml
-        languages: ${{ steps.generate-config.outputs.languages }}
+        languages: ${{ inputs.language || steps.generate-config.outputs.languages }}
         source-root: ${{ inputs.repo }}
+
+    - name: Build code
+      if: ${{ inputs.build_mode == 'manual' && inputs.build_command != null }}
+      run: |
+        cd ${{ github.workspace }}/${{ inputs.repo }}
+        ${{ inputs.build_command }}
+      shell: bash
 
     - name: Run CodeQL Analysis
       id: codeql-analysis
       uses: github/codeql-action/analyze@v3
+
       with:
         upload: false
         checkout_path: ${{ github.workspace }}/${{ inputs.repo }}
@@ -68,4 +106,4 @@ runs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: ${{ steps.codeql-analysis.outputs.sarif-output }}
-        category: my-analysis-tool
+        category: ${{ inputs.language && format('{0}-analysis', inputs.language) || 'security-code-scanner-analysis' }}
