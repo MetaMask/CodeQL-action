@@ -106,4 +106,4 @@ runs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: ${{ steps.codeql-analysis.outputs.sarif-output }}
-        category: ${{ inputs.language }}-analysis
+        category: ${{ inputs.language && format('{0}-analysis', inputs.language) || 'security-code-scanner-analysis' }}
